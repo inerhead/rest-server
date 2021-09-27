@@ -1,10 +1,9 @@
-
 const express = require('express');
 const cors = require('cors')
 
 class Server {
 
-    constructor(){
+    constructor() {
         this.port = process.env.PORT;
         this.app = express();
         this.middleware();
@@ -12,33 +11,20 @@ class Server {
 
     }
 
-    middleware(){
+    middleware() {
+        this.app.use(express.json());
         this.app.use(cors());
+
         this.app.use(express.static('./public'));
     }
 
-    routes(){
-        
-        this.app.get('/api', function (req, res) {
-         res.json({
-             VideoJuego: 'Contra'
-         });
-        });
+    routes() {
 
-        this.app.post('/api', function (req, res) {
-            res.send('Hello World POST')
-        });
-
-        this.app.delete('/api', function (req, res) {
-            res.send('Hello World DELETE')
-        });
-
-        
-
+        this.app.use('/api/users', require('./routes/user'));
 
     }
 
-    listen(){
+    listen() {
 
         this.app.listen(this.port, () => console.log(`escuchando en ${this.port}`));
     }
@@ -47,6 +33,3 @@ class Server {
 }
 
 module.exports = Server;
-
-
- 
